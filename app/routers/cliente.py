@@ -1,16 +1,18 @@
 from typing import Annotated
 from fastapi import APIRouter,Depends,HTTPException
+from fastapi.responses import HTMLResponse
 
 from app.models.cliente import Cliente,ClienteCreateUpdate
 from app.database.cliente_repository import ClienteRepository
 from app.dependencies import get_cliente_repository
 
 router = APIRouter(
-    prefix="/clientes"
+    prefix="/api/clientes"
 )
 
-CLIENTE_LIST = [Cliente(id_ =1 ,nome="Erasmo",email="asdwe@amil",telefone="43433232"),
-                Cliente(id_=2 ,nome="Jovs",email="asdwe@amil",telefone="43433232")]
+front_router = APIRouter(
+    prefix="/clientes"
+)
 
 
 @router.get("/",response_model=list[Cliente])
@@ -56,4 +58,4 @@ async def deletar_cliente(
     success = await cliente_repositorio.delete_cliente(cliente_id)
     if not success:
         raise HTTPException(status_code=404,detail="Cliente nao encontrado!")
-    
+

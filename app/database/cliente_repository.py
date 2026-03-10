@@ -5,7 +5,7 @@ from app.models.cliente import Cliente,ClienteCreateUpdate
 class ClienteRepository:
     def __init__(self,database:Database):
         self.db = database
-        
+
     async def listar_clientes(self) -> list[Cliente] | None:
         with self.db.connect() as conexao:
             cursor = conexao.cursor()
@@ -16,7 +16,7 @@ class ClienteRepository:
                     for linha in linhas
             ]
             return clientes
-    
+
     async def get_cliente(self,cliente_id:int) -> Cliente | None:
         with self.db.connect() as conexao:
             cursor = conexao.cursor()
@@ -29,7 +29,7 @@ class ClienteRepository:
                 return Cliente(id_=linha[0],nome=linha[1],email=linha[2],
                             telefone=linha[3])
             return None
-        
+
     async def create_cliente(self,cliente:ClienteCreateUpdate)-> Cliente:
         with self.db.connect() as conexao:
             cursor = conexao.cursor()
@@ -49,7 +49,7 @@ class ClienteRepository:
                 return Cliente(id_=linha[0], nome=linha[1], email=linha[2],
                             telefone=linha[3])
             raise Exception("Falha ao criar o cliente")
-        
+
     async def update_cliente(self,cliente_id:int,
                             cliente:ClienteCreateUpdate) -> Cliente | None:
         with self.db.connect() as conexao:
@@ -63,7 +63,7 @@ class ClienteRepository:
                 return None
             return Cliente(id_=cliente_id,nome=cliente.nome,email=cliente.email,
                         telefone=cliente.telefone)
-    
+
     async def delete_cliente(self,cliente_id:int) -> bool:
         with self.db.connect() as conexao:
             cursor = conexao.cursor()
