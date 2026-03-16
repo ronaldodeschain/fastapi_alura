@@ -3,7 +3,7 @@ from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 
-from app.routers import cliente
+from app.routers import cliente,login,registro
 
 templates = Jinja2Templates(directory="templates")
 
@@ -16,6 +16,9 @@ app = FastAPI(
 app.mount("/static",StaticFiles(directory="static"),name="static")
 app.include_router(cliente.router)
 app.include_router(cliente.front_router)
+app.include_router(login.router)
+app.include_router(registro.router)
+
 
 @app.get("/health")
 async def health_check():
@@ -23,4 +26,5 @@ async def health_check():
 
 @app.get("/", response_class=HTMLResponse)
 async def front_page(request:Request):
-    return templates.TemplateResponse("index.html",{"request":request,"titulo":"Crimson Claw Studio","versão":"1.0.0"})
+    return templates.TemplateResponse("index.html",{
+        "request":request,"titulo":"Crimson Claw Studio","versão":"1.0.0"})
